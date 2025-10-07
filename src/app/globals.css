@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@font-face {
+  font-family: "RobotoCustom";
+  src: url("/fonts/Roboto-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+
+/* Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 0px;  /* vertical scrollbar ko hatane ke liye */
+  height: 0px; /* horizontal scrollbar ko hatane ke liye */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none; /* scrollbar ko disable karega */
+  -ms-overflow-style: none; /* IE/Edge ke liye */
+}
