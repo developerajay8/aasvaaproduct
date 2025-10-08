@@ -2,8 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { GrAttachment } from 'react-icons/gr';
 import { IoIosArrowDown } from 'react-icons/io';
-import Upgrade from './upgrade';
-import Header from './header';
+import Upgrade from '../components/upgrade';
+import Header from '../components/header';
 import { FaCheck } from 'react-icons/fa';
 import Link from 'next/link'; // ✅ Added Link import
 
@@ -14,7 +14,7 @@ type Option = {
   link: string;
 };
 
-const Aiassestence: React.FC = () => {
+const Page: React.FC = () => {
   const [query, setQuery] = useState("");
   const [sortOpen, setSortOpen] = useState(false);
   const [courtOpen, setCourtOpen] = useState(false);
@@ -320,4 +320,4 @@ const Aiassestence: React.FC = () => {
   );
 };
 
-export default Aiassestence;
+export default Page;

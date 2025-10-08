@@ -15,6 +15,7 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import Rightview from "./rightview";
+import Link from "next/link";
 
 const Header = () => {
     const [query, setQuery] = useState("");
@@ -24,7 +25,7 @@ const Header = () => {
     const menuItems = [
   { id: "ai-assistance", label: "AI Assistance", href: "/ai-assistance", icon: <FiSearch size={30} /> },
   { id: "ai-search", label: "AI Search", href: "/ai-search", icon: <FiSearch size={30} /> },
-  { id: "advance-search", label: "Advance Search", href: "/advance-search", icon: <MdOutlineSearch size={30} /> },
+  { id: "advance-search", label: "Advance Search", href: "/keyword-search", icon: <MdOutlineSearch size={30} /> },
   { id: "database", label: "Database", href: "/database", icon: <FiDatabase size={30} /> },
   { id: "discover", label: "Discover", href: "/discover", icon: <FiCompass size={30} /> },
   { id: "virtual-assistance", label: "Virtual Assistance", href: "/virtual-assistance", icon: <FiUser size={30} /> },
@@ -61,10 +62,11 @@ const Header = () => {
                         <Image
                             src="/Frame 3385255.jpg"
                             alt="Logo"
-                            className="rounded-[12px]"
+                            className="rounded-[12px] mx-auto"
                             width={50}
                             height={50}
                         />
+                        
                     </div>
 
                     {/* Menu */}
