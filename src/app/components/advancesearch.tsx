@@ -1,8 +1,18 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
-import { FiSearch, FiMic, FiSettings } from "react-icons/fi";
+import { FiSearch, FiMic, FiSettings, FiChevronDown } from "react-icons/fi";
 import Upgrade from './upgrade';
 import Header from './header';
+import { FaCheck } from 'react-icons/fa';
+import Link from 'next/link';
+import { IoIosArrowDown } from 'react-icons/io';
+
+type Option = {
+    id: number;
+    name: string;
+    icon: string;
+    link: string;
+};
 
 const Advancesearch = () => {
     const [query, setQuery] = useState("");
@@ -58,6 +68,44 @@ const Advancesearch = () => {
     });
 
 
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [selectedOption, setSelectedOption] = useState<string>('Keyword Search');
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+
+    const options: Option[] = [
+        { id: 1, name: 'Keyword Search', icon: '≡', link: '/keyword-search' },
+        { id: 2, name: 'Citation Search', icon: '"', link: '/citation-search' },
+        { id: 3, name: 'Advance Search', icon: '⚙', link: '/advance-search' }
+    ];
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen]);
+
+    const handleSelect = (option: Option): void => {
+        setSelectedOption(option.name);
+        setIsOpen(false);
+    };
+
+    const ArrowDown: React.FC = () => (
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+    );
+
+
+
+
+
     return (
         <>
             <div className="">
@@ -77,116 +125,6 @@ const Advancesearch = () => {
 
                                     </h2>
                                     <h5 className='text-center mb-6 text-[#343434] text-[24px]'>Filter and find exactly what you need, faster.</h5>
-
-                                    {/* <div className="max-w-[993px] mx-auto">
-                        <div className="bg-[#E3E3E3] border-[1px] border-[#d7d7d7] rounded-[12px] px-4 mx-[48px] py-2">
-                            <div className="pb-8">
-                                <input
-                                    type="text"
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                    placeholder="Ask a question..."
-                                    className="flex-1 bg-transparent outline-none text-sm md:text-base text-black placeholder-gray-500"
-                                />
-                            </div>
-
-                            <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-4 relative">
-                                    <div className="relative" ref={sortRef}>
-                                        <div
-                                            onClick={() => {
-                                                setSortOpen(!sortOpen);
-                                                setCourtOpen(false);
-                                            }}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-[#D5D5D5] px-4 py-2.5 rounded-full text-gray-700 bg-[#D5D5D5] whitespace-nowrap"
-                                        >
-                                            <span className="text-sm">{selectedSort}</span>
-                                            <IoIosArrowDown />
-                                        </div>
-                                        {sortOpen && (
-                                            <div className="absolute mt-2 w-56 bg-[#F5F5F5] shadow-md rounded-lg p-2 z-10">
-                                                {sortOptions.map((option) => (
-                                                    <label
-                                                        key={option}
-                                                        className="flex items-center gap-3 py-2 px-3 rounded-md cursor-pointer hover:bg-gray-200"
-                                                    >
-                                                        <input
-                                                            type="radio"
-                                                            name="sort"
-                                                            checked={selectedSort === option}
-                                                            onChange={() => setSelectedSort(option)}
-                                                            className="w-4 h-4"
-                                                        />
-                                                        <span className="text-sm text-gray-800">{option}</span>
-                                                    </label>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="relative" ref={courtRef}>
-                                        <div
-                                            onClick={() => {
-                                                setCourtOpen(!courtOpen);
-                                                setSortOpen(false);
-                                            }}
-                                            className="flex items-center gap-2 cursor-pointer hover:bg-[#D5D5D5] px-4 py-2.5 rounded-full text-gray-700 bg-[#D5D5D5] whitespace-nowrap"
-                                        >
-                                            <span className="text-sm">
-                                                {selectedCourts.length === courtOptions.length
-                                                    ? "All Court Selected"
-                                                    : `${selectedCourts.length} Selected`}
-                                            </span>
-                                            <IoIosArrowDown />
-                                        </div>
-                                        {courtOpen && (
-                                            <div className="absolute mt-2 w-64 bg-[#F5F5F5] shadow-md rounded-lg p-2 z-10">
-                                                <div className="flex justify-between items-center px-3 py-2 border-b border-gray-300">
-                                                    <button
-                                                        onClick={handleSelectAll}
-                                                        className="text-sm text-blue-600 hover:underline"
-                                                    >
-                                                        Select All
-                                                    </button>
-                                                    <button
-                                                        onClick={handleClearAll}
-                                                        className="text-sm text-red-500 hover:underline"
-                                                    >
-                                                        Clear All
-                                                    </button>
-                                                </div>
-
-                                                {courtOptions.map((court, index) => (
-                                                    <label
-                                                        key={court}
-                                                        className={`flex items-center gap-3 py-2 px-3 rounded-md cursor-pointer hover:bg-gray-200 ${index === 0 ? "mt-2" : ""
-                                                            }`}
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={selectedCourts.includes(court)}
-                                                            onChange={() => toggleCourt(court)}
-                                                            className="w-4 h-4"
-                                                        />
-                                                        <span className="text-sm text-gray-800">{court}</span>
-                                                    </label>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-2 hover:bg-[#D5D5D5] px-4 py-2.5 rounded-[12px] text-gray-700 bg-[#D5D5D5] whitespace-nowrap">
-                                                        <div className=""><img src="/carbon_chip.jpg" alt="" /></div>
-                                                        <button className="text-sm">Model</button>
-                                                        <IoIosArrowDown />
-                                                    </div>
-                                    <button className="cursor-pointer"><img src="/Frame 3385264.svg" alt="" /></button>
-                                    <button className="cursor-pointer"><img src="/Frame 30.svg" alt="" /></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
 
 
                                     <div className="max-w-[993px] mx-auto ">
@@ -245,35 +183,161 @@ const Advancesearch = () => {
                                             <div className="flex items-center justify-between flex-wrap gap-3">
                                                 {/* Left Filters */}
                                                 <div className="flex gap-3 flex-wrap">
-                                                    <select className="px-4 py-2 bg-gray-300 rounded-md text-sm">
-                                                        <option>Most Relevant</option>
-                                                        <option>Newest</option>
-                                                        <option>Oldest</option>
-                                                    </select>
-                                                    <select className="px-4 py-2 bg-gray-300 rounded-md text-sm">
-                                                        <option>All Court Selected</option>
-                                                        <option>Supreme Court</option>
-                                                        <option>High Court</option>
-                                                    </select>
-                                                    <select className="px-4 py-2 bg-gray-300 rounded-md text-sm">
-                                                        <option>All Word</option>
-                                                        <option>Exact Match</option>
-                                                        <option>Any Word</option>
-                                                    </select>
+
+                                                    {/* Sort Dropdown */}
+                                                    <div className="relative" ref={sortRef}>
+                                                        <div
+                                                            onClick={() => {
+                                                                setSortOpen(!sortOpen);
+                                                                setCourtOpen(false);
+                                                            }}
+                                                            className="flex items-center gap-2 cursor-pointer hover:bg-[#D5D5D5] px-4 py-2.5 rounded-full text-gray-700 bg-[#D5D5D5] whitespace-nowrap"
+                                                        >
+                                                            <span className="text-sm">{selectedSort}</span>
+                                                            <IoIosArrowDown />
+                                                        </div>
+                                                        {sortOpen && (
+                                                            <div className="absolute mt-2 w-56 bg-[#F5F5F5] shadow-md rounded-lg p-2 z-10">
+                                                                {sortOptions.map((option) => (
+                                                                    <label
+                                                                        key={option}
+                                                                        className="flex items-center gap-3 py-2 px-3 rounded-md cursor-pointer hover:bg-gray-200"
+                                                                    >
+                                                                        <input
+                                                                            type="radio"
+                                                                            name="sort"
+                                                                            checked={selectedSort === option}
+                                                                            onChange={() => setSelectedSort(option)}
+                                                                            className="w-4 h-4"
+                                                                        />
+                                                                        <span className="text-sm text-gray-800">{option}</span>
+                                                                    </label>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Court Dropdown */}
+                                                    <div className="relative" ref={courtRef}>
+                                                        <div
+                                                            onClick={() => {
+                                                                setCourtOpen(!courtOpen);
+                                                                setSortOpen(false);
+                                                            }}
+                                                            className="flex items-center gap-2 cursor-pointer hover:bg-[#D5D5D5] px-4 py-2.5 rounded-full text-gray-700 bg-[#D5D5D5] whitespace-nowrap"
+                                                        >
+                                                            <span className="text-sm">
+                                                                {selectedCourts.length === courtOptions.length
+                                                                    ? "All Court Selected"
+                                                                    : `${selectedCourts.length} Selected`}
+                                                            </span>
+                                                            <IoIosArrowDown />
+                                                        </div>
+                                                        {courtOpen && (
+                                                            <div className="absolute mt-2 w-64 bg-[#F5F5F5] shadow-md rounded-lg p-2 z-10">
+                                                                <div className="flex justify-between items-center px-3 py-2 border-b border-gray-300">
+                                                                    <button
+                                                                        onClick={handleSelectAll}
+                                                                        className="text-sm text-blue-600 hover:underline"
+                                                                    >
+                                                                        Select All
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={handleClearAll}
+                                                                        className="text-sm text-red-500 hover:underline"
+                                                                    >
+                                                                        Clear All
+                                                                    </button>
+                                                                </div>
+                                                                {courtOptions.map((court, index) => (
+                                                                    <label
+                                                                        key={court}
+                                                                        className={`flex items-center gap-3 py-2 px-3 rounded-md cursor-pointer hover:bg-gray-200 ${index === 0 ? "mt-2" : ""
+                                                                            }`}
+                                                                    >
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            checked={selectedCourts.includes(court)}
+                                                                            onChange={() => toggleCourt(court)}
+                                                                            className="w-4 h-4"
+                                                                        />
+                                                                        <span className="text-sm text-gray-800">{court}</span>
+                                                                    </label>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+
+
+                                                    <button className="flex items-center gap-2 cursor-pointer hover:bg-[#D5D5D5] px-4 py-2.5 rounded-full text-gray-700 bg-[#D5D5D5] whitespace-nowrap">
+                                                        <span className='text-sm'>All Word</span>
+                                                        <IoIosArrowDown />
+                                                    </button>
                                                 </div>
 
                                                 {/* Right Actions */}
-                                                <div className="flex items-center gap-3">
-                                                    <select className="px-4 py-2 bg-gray-300 rounded-md text-sm flex items-center gap-2">
-                                                        <option>Model</option>
-                                                        <option>GPT</option>
-                                                        <option>BERT</option>
-                                                    </select>
-                                                    <button className="p-3 rounded-md bg-gray-300">
-                                                        <FiMic size={20} />
+                                                <div className="flex items-center gap-4">
+                                                    <div className="relative" ref={dropdownRef}>
+                                                        <div
+                                                            onClick={() => setIsOpen(!isOpen)}
+                                                            className="flex items-center gap-2 hover:bg-[#D5D5D5] px-4 py-2.5 rounded-[12px] text-gray-700 bg-[#D5D5D5] whitespace-nowrap cursor-pointer transition-colors"
+                                                        >
+                                                            <img src="/carbon_chip.jpg" alt="" className="w-5 h-5" />
+                                                            <button className="text-sm">Model</button>
+                                                            <ArrowDown />
+                                                        </div>
+
+                                                        {isOpen && (
+                                                            <div className="absolute top-full mt-2 left-0 w-64 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 animate-fadeIn">
+                                                                {options.map((option) => (
+                                                                    <Link
+                                                                        key={option.id}
+                                                                        href={option.link}
+                                                                        onClick={() => handleSelect(option)}
+                                                                    >
+                                                                        <div className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                                                                            <div className="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-medium text-lg">
+                                                                                {option.icon}
+                                                                            </div>
+                                                                            <span className="text-sm text-gray-700 flex-1">{option.name}</span>
+                                                                            <div
+                                                                                className={`w-5 h-5 flex items-center justify-center rounded-full border-2 transition-all ${selectedOption === option.name
+                                                                                    ? "bg-black border-black"
+                                                                                    : "border-gray-400"
+                                                                                    }`}
+                                                                            >
+                                                                                {selectedOption === option.name && (
+                                                                                    <FaCheck className="text-white text-[12px]" />
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Link>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    <style jsx>{`
+                            @keyframes fadeIn {
+                              from {
+                                opacity: 0;
+                                transform: translateY(-4px);
+                              }
+                              to {
+                                opacity: 1;
+                                transform: translateY(0);
+                              }
+                            }
+                            .animate-fadeIn {
+                              animation: fadeIn 0.15s ease-out;
+                            }
+                          `}</style>
+                                                    <button className="cursor-pointer">
+                                                        <img src="/Frame 3385264.svg" alt="" />
                                                     </button>
-                                                    <button className="p-3 rounded-md bg-black text-white">
-                                                        <FiSearch size={20} />
+                                                    <button className="cursor-pointer">
+                                                        <img src="/Frame 30.svg" alt="" />
                                                     </button>
                                                 </div>
                                             </div>

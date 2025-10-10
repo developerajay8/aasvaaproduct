@@ -2,19 +2,24 @@
 import React, { useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
 import { GrAttachment } from "react-icons/gr";
-import Aiassestence from "./aiassestence";
-import Upgrade from "./upgrade";
+import Aiassestence from "../components/aiassestence";
+import Upgrade from "../components/upgrade";
 import Link from "next/link";
-const Rightview = () => {
+import Header from '../components/header';
+const Page = () => {
         const [query, setQuery] = useState("");
 
     
     return (
         <div>
             <div className="">
-
-                    
-                        <>
+ <div className="w-full h-screen overflow-hidden">
+            <div className="flex">
+                <div className='w-[7%] bg-[#1E1E1E] py-[24px] px-[24.5px] flex flex-col justify-between overflow-y-auto h-screen '>
+                <Header/>
+                </div>
+             
+                        <div className='bg-[#F9F9F9] w-full pt-[30px] h-screen flex flex-col'>
                             <Upgrade/>
 
                             <div className="min-h-[80vh] flex items-center justify-center">
@@ -72,13 +77,15 @@ const Rightview = () => {
                                     <span className="cursor-pointer text-[#8A8A8A] text-[14px] hover:text-black">Treatises</span>
                                 </div>
                             </div>
-                        </>
-                   
+                        </div>
+             
 
                    
+                </div>
+                </div>
                 </div>
         </div>
     );
 }
 
-export default Rightview;
+export default Page;

@@ -32,18 +32,18 @@ const Page = () => {
 
                                 <div className="max-w-[993px] mx-auto">
                                     <div className="bg-[#E3E3E3] border-[1px] border-[#d7d7d7] rounded-[12px] px-4 mx-[48px] py-2 flex items-center justify-between">
-                                        <div className="py-6">
+                                        <div className="w-full py-6">
                                             <input
                                                 type="text"
                                                 value={query}
                                                 onChange={(e) => setQuery(e.target.value)}
                                                 placeholder="Ask a question..."
-                                                className="w-full bg-transparent border-none  flex-1  outline-none text-[18px] text-[#A8A8A8] placeholder-[#A8A8A8]  "
+                                                className="w-full bg-transparent border-none outline-none text-[18px] text-[#A8A8A8] placeholder-[#A8A8A8] px-4 py-2"
                                             />
                                         </div>
 
                                         <div className="flex items-center gap-3">
-                                            
+
                                             <button className="cursor-pointer"><img src="/Frame 3385264.svg" alt="" /></button>
                                             <button className="cursor-pointer"><img src="/Frame 30.svg" alt="" /></button>
                                         </div>

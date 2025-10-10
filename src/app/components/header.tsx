@@ -18,9 +18,7 @@ import Rightview from "./rightview";
 import Link from "next/link";
 
 const Header = () => {
-    const [query, setQuery] = useState("");
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [selectedMenu, setSelectedMenu] = useState("default");
+   
 
     const menuItems = [
   { id: "ai-assistance", label: "AI Assistance", href: "/ai-assistance", icon: <FiSearch size={30} /> },
@@ -37,12 +35,7 @@ const Header = () => {
         { id: "notification", label: "", icon: <FiBell size={30} /> },
     ];
 
-    const chatHistory = [
-        { category: "Today", items: ["Lorem Ipsum", "Lorem Ipsum"] },
-        { category: "Yesterday", items: ["Lorem Ipsum", "Lorem Ipsum"] },
-        { category: "Previous 7 Days", items: ["Lorem Ipsum", "Lorem Ipsum"] },
-        { category: "Previous 30 Days", items: ["Lorem Ipsum", "Lorem Ipsum"] },
-    ];
+   
 
       const router = useRouter();
 
@@ -53,12 +46,9 @@ const Header = () => {
                 <div className="">
                     {/* Logo */}
                     <div
-                        onClick={() => {
-                            setSidebarOpen(!sidebarOpen);
-                            setSelectedMenu("default");
-                        }}
                         className="mb-6 cursor-pointer"
                     >
+                    <Link href={"/"}>
                         <Image
                             src="/Frame 3385255.jpg"
                             alt="Logo"
@@ -66,6 +56,7 @@ const Header = () => {
                             width={50}
                             height={50}
                         />
+                        </Link>
                         
                     </div>
 
@@ -99,43 +90,13 @@ const Header = () => {
                                 {item.icon}
                             </div>
                         ))}
-                        <div className="w-12 h-12 mx-auto mt-[12px] bg-gray-300 rounded-full"></div>
-                    </div>
-                </div>
-
-                {/* Sidebar Panel (left) */}
-                <div
-                    className={`bg-[#F1F1F1] transition-all duration-1000 overflow-y-auto h-screen ${
-                        sidebarOpen ? "w-[280px]" : "w-0"
-                    }`}
-                    style={{ display: sidebarOpen ? "block" : "none" }}
-                >
-                    <div className="p-6">
-                        <h3 className="text-lg font-semibold mb-4 text-black">AI Assistance</h3>
-
-                        <button className="w-full bg-black text-white rounded-lg py-3 mb-6 hover:bg-gray-800 transition">
-                            New Chat
-                        </button>
-
-                        <div className="space-y-6">
-                            {chatHistory.map((section, idx) => (
-                                <div key={idx}>
-                                    <p className="text-xs text-gray-500 mb-2 font-semibold">{section.category}</p>
-                                    <div className="space-y-2">
-                                        {section.items.map((item, itemIdx) => (
-                                            <div
-                                                key={itemIdx}
-                                                className="text-sm text-gray-700 hover:bg-gray-200 p-2 rounded cursor-pointer transition"
-                                            >
-                                                {item}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
+                        <div className="w-12 h-12 mx-auto mt-[12px] ">
+                            <img src="/Rectangle 246.png" alt="" />
                         </div>
                     </div>
                 </div>
+
+                
 
                 
             </div>
